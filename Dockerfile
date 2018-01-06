@@ -15,6 +15,6 @@ COPY --from=mvn /schematron /schematron
 
 VOLUME /src
 
-WORKDIR /schematron
+WORKDIR /src
 
 ENTRYPOINT ["sh", "/schematron/bin/run.sh"]

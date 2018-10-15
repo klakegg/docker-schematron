@@ -13,6 +13,8 @@ FROM java:8-jre-alpine
 
 COPY --from=mvn /schematron /schematron
 
+RUN apk --no-cache add zip
+
 VOLUME /src
 
 WORKDIR /src

@@ -13,10 +13,12 @@ FROM java:8-jre-alpine
 
 COPY --from=mvn /schematron /schematron
 
-RUN apk --no-cache add zip
+ADD docker /docker
+
+RUN sh /docker/run.sh
 
 VOLUME /src
 
 WORKDIR /src
 
-ENTRYPOINT ["sh", "/schematron/bin/run.sh"]
+ENTRYPOINT ["schematron"]

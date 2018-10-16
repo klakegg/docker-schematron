@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sh /schematron/bin/run.sh $@

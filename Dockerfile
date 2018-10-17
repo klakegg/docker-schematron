@@ -17,7 +17,7 @@ ADD docker /docker
 
 RUN sh /docker/run.sh
 
-VOLUME /src
+VOLUME /src /target
 
 WORKDIR /src
 

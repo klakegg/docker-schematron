@@ -4,8 +4,8 @@
 apk --no-cache add zip gettext
 
 # Prepare command
-mv /docker/schematron /bin/schematron
-chmod a+x /bin/schematron
+chmod a+x /docker/bin/*
+mv /docker/bin/* /bin/
 
 # Delete content
 rm -r /docker

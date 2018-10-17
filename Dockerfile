@@ -9,7 +9,7 @@ RUN cd $MAVEN_HOME/project \
 
 
 
-FROM java:8-jre-alpine
+FROM openjdk:8-jre-alpine
 
 COPY --from=mvn /schematron /schematron
 

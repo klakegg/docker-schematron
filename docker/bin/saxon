@@ -1,3 +1,0 @@
-#!/bin/sh
-
-java -classpath $(ls /schematron/lib/Saxon-HE-* | head -1) $@

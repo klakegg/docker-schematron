@@ -1,8 +1,13 @@
-language: java
-jdk:
-  - oraclejdk8
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-cache:
-  directories:
-    - '$HOME/.m2/repository'
+sudo: required
+
+language: bash
+
+services:
+  - docker
+
+script:
+  - docker build -f Dockerfile -t schematron:base .
+  - docker build -f Dockerfile-iso -t schematron:iso .
+  - docker build -f Dockerfile-schxslt -t schematron:schxslt .
+  - docker run --rm -i schematron:iso
+  - docker run --rm -i schematron:schxslt

@@ -1,0 +1,8 @@
+FROM schematron:base AS base
+
+
+FROM klakegg/saxon
+
+COPY --from=base /schxslt /
+
+ENTRYPOINT ["schxslt"]

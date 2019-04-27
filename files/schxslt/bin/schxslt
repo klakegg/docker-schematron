@@ -1,0 +1,80 @@
+#!/bin/sh
+
+ME=schxslt
+
+include() {
+  if [ ! $2 ]; then
+    echo "$ME include [source] [target] (arguments)"
+    exit
+  fi
+
+  source=$1
+  target=$2
+  shift 2
+
+  saxon \
+    -xsl:/scripts/schxslt/include.xsl \
+    -s:$source \
+    -o:$target \
+    "$@"
+}
+
+expand() {
+  if [ ! $2 ]; then
+    echo "$ME expand [source] [target] (arguments)"
+    exit
+  fi
+
+  source=$1
+  target=$2
+  shift 2
+
+  saxon \
+    -xsl:/scripts/schxslt/expand.xsl \
+    -s:$source \
+    -o:$target \
+    "$@"
+}
+
+prepare() {
+  if [ ! $2 ]; then
+    echo "$ME prepare [source] [target] (arguments)"
+    exit
+  fi
+
+  source=$1
+  target=$2
+  shift 2
+
+  include $1 /tmp/step1.sch "$@"
+  include /tmp/step1.sch $2 "$@"
+  rm /tmp/step1.sch
+}
+
+compile() {
+  if [ ! $2 ]; then
+    echo "$ME compile [source] [target] (arguments)"
+    exit
+  fi
+
+  source=$1
+  target=$2
+  shift 2
+
+  saxon \
+    -xsl:/scripts/schxslt/compile-for-svrl.xsl \
+    -s:$source \
+    -o:$target \
+    "$@"
+}
+
+if [ ! $1 ]; then
+  echo "Available functions:"
+  echo "* include"
+  echo "* expand"
+  echo "* prepare (include + expand)"
+  echo "* compile"
+  exit
+fi
+
+$@

@@ -1,3 +1,0 @@
-#!/bin/sh
-
-saxon net.sf.saxon.Transform $@

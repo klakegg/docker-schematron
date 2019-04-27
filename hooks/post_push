@@ -1,0 +1,40 @@
+#!/bin/bash
+
+if [ $SOURCE_BRANCH = "master" ]; then
+  VERSION="dev"
+else
+  VERSION="$SOURCE_BRANCH"
+fi
+
+# schematron:base (no push)
+docker tag $DOCKER_REPO:$VERSION-base schematron:base
+
+# schematron:$VERSION-schxslt
+docker build -t $DOCKER_REPO:$VERSION-schxslt -f Dockerfile-schxslt .
+docker push $DOCKER_REPO:$VERSION-schxslt
+
+# schematron:$VERSION-iso
+docker build -t $DOCKER_REPO:$VERSION-iso -f Dockerfile-iso .
+docker push $DOCKER_REPO:$VERSION-iso
+
+# schematron:$VERSION
+docker tag $DOCKER_REPO:$VERSION-iso $DOCKER_REPO:$VERSION
+docker push $DOCKER_REPO:$VERSION
+
+if [ $SOURCE_BRANCH != "master" ]; then
+  # schematron:latest-base
+  docker tag $DOCKER_REPO:$VERSION-base $DOCKER_REPO:latest-base
+  docker push $DOCKER_REPO:latest-base
+
+  # schematron:latest-schxslt
+  docker tag $DOCKER_REPO:$VERSION-schxslt $DOCKER_REPO:latest-schxslt
+  docker push $DOCKER_REPO:latest-schxslt
+
+  # schematron:latest-iso
+  docker tag $DOCKER_REPO:$VERSION-iso $DOCKER_REPO:latest-iso
+  docker push $DOCKER_REPO:latest-iso
+
+  # schematron:latest
+  docker tag $DOCKER_REPO:$VERSION $DOCKER_REPO:latest
+  docker push $DOCKER_REPO:latest
+fi

@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [ "$1" == "sh" ]; then
-  shift
-  sh $@
-else
-  sh /schematron/bin/run.sh $@
-fi

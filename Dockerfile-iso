@@ -3,6 +3,9 @@ FROM schematron:base AS base
 
 FROM klakegg/saxon
 
+RUN apk add --no-cache zip \
+ && ln -s /bin/iso-schematron /bin/schematron
+
 COPY --from=base /iso-schematron /
 COPY --from=base /klakegg /
 

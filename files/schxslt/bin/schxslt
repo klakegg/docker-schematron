@@ -42,7 +42,11 @@ prepare() {
     exit
   fi
 
-  include "$1" - "$@" | expand - "$2" "$@"
+  source="$1"
+  target="$2"
+  shift 2
+
+  include $source - "$@" | expand - $target "$@"
 }
 
 compile() {

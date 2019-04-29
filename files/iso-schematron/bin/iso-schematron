@@ -2,20 +2,30 @@
 
 ME=iso-schematron
 
+_source() {
+  echo "-s:$1"
+}
+
+_target() {
+  if [ "$1" != "-" ]; then
+    echo "-o:$1"
+  fi
+}
+
 include() {
   if [ ! $2 ]; then
     echo "$ME include [source] [target] (arguments)"
     exit
   fi
 
-  source=$1
-  target=$2
+  source=$(_source "$1")
+  target=$(_target "$2")
   shift 2
 
-  saxon \
+  xslt \
     -xsl:/scripts/iso-schematron/iso_dsdl_include.xsl \
-    -s:$source \
-    -o:$target \
+    $source \
+    $target \
     "$@"
 }
 
@@ -25,14 +35,14 @@ expand() {
     exit
   fi
 
-  source=$1
-  target=$2
+  source=$(_source "$1")
+  target=$(_target "$2")
   shift 2
 
-  saxon \
+  xslt \
     -xsl:/scripts/iso-schematron/iso_abstract_expand.xsl \
-    -s:$source \
-    -o:$target \
+    $source \
+    $target \
     "$@"
 }
 
@@ -42,13 +52,7 @@ prepare() {
     exit
   fi
 
-  source=$1
-  target=$2
-  shift 2
-
-  include $1 /tmp/step1.sch "$@"
-  include /tmp/step1.sch $2 "$@"
-  rm /tmp/step1.sch
+  include "$1" - "$@" | expand - "$2" "$@"
 }
 
 compile() {
@@ -57,14 +61,14 @@ compile() {
     exit
   fi
 
-  source=$1
-  target=$2
+  source=$(_source "$1")
+  target=$(_target "$2")
   shift 2
 
-  saxon \
+  xslt \
     -xsl:/scripts/iso-schematron/iso_svrl_for_xslt2.xsl \
-    -s:$source \
-    -o:$target \
+    $source \
+    $target \
     "$@"
 }
 
@@ -74,14 +78,14 @@ compile_xslt1() {
     exit
   fi
 
-  source=$1
-  target=$2
+  source=$(_source "$1")
+  target=$(_target "$2")
   shift 2
 
-  saxon \
+  xslt \
     -xsl:/scripts/iso-schematron/iso_svrl_for_xslt1.xsl \
-    -s:$source \
-    -o:$target \
+    $source \
+    $target \
     "$@"
 }
 

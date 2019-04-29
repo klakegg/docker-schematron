@@ -11,21 +11,25 @@
     <xsl:variable name="list" select="tokenize($rules, ',')"/>
 
     <xsl:template match="/*">
-        <xsl:variable name="document">
-            <xsl:apply-templates select="*"/>
-        </xsl:variable>
-
         <xsl:copy>
-            <xsl:apply-templates select="$document"/>
+            <xsl:apply-templates select="@*|node()"/>
         </xsl:copy>
     </xsl:template>
 
-    <xsl:template match="sch:assert[some $id in $list satisfies normalize-space($id) = normalize-space(@id)]">
+    <xsl:template match="sch:assert[@id and (some $id in $list satisfies normalize-space($id) = normalize-space(@id))]">
         <!-- No action -->
     </xsl:template>
 
-    <xsl:template match="sch:rule[count(child::*) = 0]">
-        <!-- No action -->
+    <xsl:template match="sch:rule">
+        <xsl:variable name="res">
+            <xsl:copy>
+                <xsl:apply-templates select="@*|node()"/>
+            </xsl:copy>
+        </xsl:variable>
+
+        <xsl:if test="count($res/*[*]) != 0">
+            <xsl:copy-of select="$res"/>
+        </xsl:if>
     </xsl:template>
 
     <xsl:template match="@*|node()">

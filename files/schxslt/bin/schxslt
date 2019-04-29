@@ -8,14 +8,14 @@ include() {
     exit
   fi
 
-  source=$1
-  target=$2
+  source=$(_source "$1")
+  target=$(_target "$2")
   shift 2
 
-  saxon \
+  xslt \
     -xsl:/scripts/schxslt/include.xsl \
-    -s:$source \
-    -o:$target \
+    $source \
+    $target \
     "$@"
 }
 
@@ -25,14 +25,14 @@ expand() {
     exit
   fi
 
-  source=$1
-  target=$2
+  source=$(_source "$1")
+  target=$(_target "$2")
   shift 2
 
-  saxon \
+  xslt \
     -xsl:/scripts/schxslt/expand.xsl \
-    -s:$source \
-    -o:$target \
+    $source \
+    $target \
     "$@"
 }
 
@@ -42,13 +42,7 @@ prepare() {
     exit
   fi
 
-  source=$1
-  target=$2
-  shift 2
-
-  include $1 /tmp/step1.sch "$@"
-  include /tmp/step1.sch $2 "$@"
-  rm /tmp/step1.sch
+  include "$1" - "$@" | expand - "$2" "$@"
 }
 
 compile() {
@@ -57,14 +51,14 @@ compile() {
     exit
   fi
 
-  source=$1
-  target=$2
+  source=$(_source "$1")
+  target=$(_target "$2")
   shift 2
 
-  saxon \
+  xslt \
     -xsl:/scripts/schxslt/compile-for-svrl.xsl \
-    -s:$source \
-    -o:$target \
+    $source \
+    $target \
     "$@"
 }
 

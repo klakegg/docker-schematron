@@ -1,0 +1,58 @@
+#!/bin/sh
+
+ME=schutil
+
+_source() {
+  echo "-s:$1"
+}
+
+_target() {
+  if [ "$1" != "-" ]; then
+    echo "-o:$1"
+  fi
+}
+
+exclude() {
+  if [ ! $2 ]; then
+    echo "$ME exclude [source] [target] [rules]"
+    exit
+  fi
+
+  source=$(_source "$1")
+  target=$(_target "$2")
+  shift 2
+
+  xslt \
+    -xsl:/scripts/klakegg/schematron-exclude.xsl \
+    $source \
+    $target \
+    rules=$(echo "$@" | sed -e "s:  : :g" -e "s: :,:g")
+}
+
+flag() {
+  if [ ! $3 ]; then
+    echo "$ME flag [source] [target] [flag] [rules]"
+    exit
+  fi
+
+  source=$(_source "$1")
+  target=$(_target "$2")
+  flag=$3
+  shift 3
+
+  xslt \
+    -xsl:/scripts/klakegg/schematron-flag.xsl \
+    $source \
+    $target \
+    flag=$flag \
+    rules=$(echo "$@" | sed -e "s:  : :g" -e "s: :,:g")
+}
+
+if [ ! $1 ]; then
+  echo "Available functions:"
+  echo "* exclude"
+  echo "* flag"
+  exit
+fi
+
+$@

@@ -4,5 +4,6 @@ FROM schematron:base AS base
 FROM klakegg/saxon
 
 COPY --from=base /schxslt /
+COPY --from=base /klakegg /
 
 ENTRYPOINT ["schxslt"]

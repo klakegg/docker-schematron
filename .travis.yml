@@ -6,8 +6,6 @@ services:
   - docker
 
 script:
-  - docker build -f Dockerfile -t schematron:base .
-  - docker build -f Dockerfile-iso -t schematron:iso .
-  - docker build -f Dockerfile-schxslt -t schematron:schxslt .
+  - sh build.sh
   - docker run --rm -i schematron:iso
   - docker run --rm -i schematron:schxslt

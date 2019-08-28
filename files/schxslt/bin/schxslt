@@ -13,9 +13,9 @@ include() {
   shift 2
 
   xslt \
-    -xsl:/scripts/schxslt/include.xsl \
-    $source \
-    $target \
+    -xsl:/usr/share/xslt/schxslt/include.xsl \
+    "$source" \
+    "$target" \
     "$@"
 }
 
@@ -30,9 +30,9 @@ expand() {
   shift 2
 
   xslt \
-    -xsl:/scripts/schxslt/expand.xsl \
-    $source \
-    $target \
+    -xsl:/usr/share/xslt/schxslt/expand.xsl \
+    "$source" \
+    "$target" \
     "$@"
 }
 
@@ -46,7 +46,7 @@ prepare() {
   target="$2"
   shift 2
 
-  include $source - "$@" | expand - $target "$@"
+  include "$source" - "$@" | expand - "$target" "$@"
 }
 
 compile() {
@@ -60,9 +60,9 @@ compile() {
   shift 2
 
   xslt \
-    -xsl:/scripts/schxslt/compile-for-svrl.xsl \
-    $source \
-    $target \
+    -xsl:/usr/share/xslt/schxslt/compile-for-svrl.xsl \
+    "$source" \
+    "$target" \
     "$@"
 }
 

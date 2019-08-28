@@ -23,9 +23,9 @@ exclude() {
   shift 2
 
   xslt \
-    -xsl:/scripts/klakegg/schematron-exclude.xsl \
-    $source \
-    $target \
+    -xsl:/usr/share/xslt/klakegg/schematron-exclude.xsl \
+    "$source" \
+    "$target" \
     rules=$(echo "$@" | sed -e "s:  : :g" -e "s: :,:g")
 }
 
@@ -37,14 +37,14 @@ flag() {
 
   source=$(_source "$1")
   target=$(_target "$2")
-  flag=$3
+  flag="$3"
   shift 3
 
   xslt \
-    -xsl:/scripts/klakegg/schematron-flag.xsl \
-    $source \
-    $target \
-    flag=$flag \
+    -xsl:/usr/share/xslt/klakegg/schematron-flag.xsl \
+    "$source" \
+    "$target" \
+    flag="$flag" \
     rules=$(echo "$@" | sed -e "s:  : :g" -e "s: :,:g")
 }
 

@@ -23,9 +23,9 @@ include() {
   shift 2
 
   xslt \
-    -xsl:/scripts/iso-schematron/iso_dsdl_include.xsl \
-    $source \
-    $target \
+    -xsl:/usr/share/xslt/iso-schematron/iso_dsdl_include.xsl \
+    "$source" \
+    "$target" \
     "$@"
 }
 
@@ -40,9 +40,9 @@ expand() {
   shift 2
 
   xslt \
-    -xsl:/scripts/iso-schematron/iso_abstract_expand.xsl \
-    $source \
-    $target \
+    -xsl:/usr/share/xslt/iso-schematron/iso_abstract_expand.xsl \
+    "$source" \
+    "$target" \
     "$@"
 }
 
@@ -56,7 +56,11 @@ prepare() {
   target="$2"
   shift 2
 
-  include $source - "$@" | expand - $target "$@"
+  echo "Source: $source"
+  echo "Target: $target"
+  echo "Args: $@"
+
+  include "$source" - "$@" | expand - "$target" "$@"
 }
 
 compile() {
@@ -70,9 +74,9 @@ compile() {
   shift 2
 
   xslt \
-    -xsl:/scripts/iso-schematron/iso_svrl_for_xslt2.xsl \
-    $source \
-    $target \
+    -xsl:/usr/share/xslt/iso-schematron/iso_svrl_for_xslt2.xsl \
+    "$source" \
+    "$target" \
     "$@"
 }
 
@@ -87,9 +91,9 @@ compile_xslt1() {
   shift 2
 
   xslt \
-    -xsl:/scripts/iso-schematron/iso_svrl_for_xslt1.xsl \
-    $source \
-    $target \
+    -xsl:/usr/share/xslt/iso-schematron/iso_svrl_for_xslt1.xsl \
+    "$source" \
+    "$target" \
     "$@"
 }
 
